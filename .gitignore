@@ -209,3 +209,4 @@ FakesAssemblies/
 *.xproj
 .settings
 project.lock.json
+/HelloWorldCSharp6.sln
