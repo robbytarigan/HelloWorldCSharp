@@ -15,8 +15,6 @@ namespace HelloWorldCSharp6
 
         public Product(string name, string description)
         {
-
-
             if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentNullException(nameof(Product));
@@ -41,5 +39,7 @@ namespace HelloWorldCSharp6
                 return description;
             }
         }
+        
+        public string GetLongDescription() => $"Product Name: {Name}, Description : {Description}"; 
     }
 }

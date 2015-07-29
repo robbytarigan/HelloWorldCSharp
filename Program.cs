@@ -12,7 +12,7 @@ namespace HelloWorldCSharp6
             Console.WriteLine("Hello world!");
             var product = new Product("Car", "  Should be without space. right.  ");
 
-            Console.WriteLine($"Product name with string interpolation: {product.Name}, description : {product.Description}");
+            Console.WriteLine(product.GetLongDescription());
 
             Console.ReadLine();
         }
