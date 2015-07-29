@@ -8,10 +8,10 @@ namespace HelloWorldCSharp6
 {
     public class Program
     {
-        public void Main(string[] args)
+        public async Task Main(string[] args)
         {
             WriteLine("Hello world!");
-            var product = new Product("Car", "  Should be without space. right 1.  ");
+            var product = new Product("Car", "  Should be without space. right 2.  ");
 
             WriteLine(product.GetLongDescription());
 
@@ -37,8 +37,32 @@ namespace HelloWorldCSharp6
             {
                 WriteLine("caught E2");
             }
-
+            
+            // Await in catch and finally demo
+            try {
+                await TaskThatReturnException();
+            } catch (Exception ex) {
+                await HandleException(ex);
+            } finally {
+                await FinallyMethod();
+            }
+                
+                
             ReadLine();
+        }
+        
+        public Task TaskThatReturnException()   {
+            throw new Exception("Some exception in the task");
+        }
+        
+        public Task<int> HandleException(Exception ex)   {
+            Console.WriteLine($"Exception is handled. Error message was {ex.Message}");
+            return Task.FromResult(0);
+        }
+        
+        public Task FinallyMethod() {
+            Console.WriteLine("Finally awaitable... nice.");
+            return Task.FromResult(0);
         }
     }
 }
