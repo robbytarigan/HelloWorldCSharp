@@ -7,6 +7,8 @@ namespace HelloWorldCSharp6
 {
     public class Product
     {
+        private readonly IDictionary<int, DateTime> viewingDates;
+        
         public Product(string name, string description)
         {
             if (string.IsNullOrEmpty(name))
@@ -15,12 +17,29 @@ namespace HelloWorldCSharp6
             }
 
             this.Name = name;
-            this.Description = description?.Trim();
+            this.Description = description?.Trim();            
+        }
+
+        public Product()    {
+            this.viewingDates = new Dictionary<int, DateTime>();
+        }
+
+        public DateTime this[int index] 
+        { 
+            get 
+            {
+                return this.viewingDates[index];
+            }
+            
+            set 
+            {
+                this.viewingDates[index] = value;
+            }
         }
 
         public string Name { get; }
         
-        public string Version { get; } = "1.0.0";
+        public string Version { get; set; } = "1.0.0";
         
         public string Description { get; }               
         
