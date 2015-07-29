@@ -7,12 +7,6 @@ namespace HelloWorldCSharp6
 {
     public class Product
     {
-        private readonly string name;
-
-        private readonly int version;
-
-        private readonly string description;
-
         public Product(string name, string description)
         {
             if (string.IsNullOrEmpty(name))
@@ -20,26 +14,16 @@ namespace HelloWorldCSharp6
                 throw new ArgumentNullException(nameof(Product));
             }
 
-            this.name = name;
-            this.description = description?.Trim();
+            this.Name = name;
+            this.Description = description?.Trim();
         }
 
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-        }
-
-        public string Description
-        {
-            get
-            {
-                return description;
-            }
-        }
+        public string Name { get; }
         
-        public string GetLongDescription() => $"Product Name: {Name}, Description : {Description}"; 
+        public string Version { get; } = "1.0.0";
+        
+        public string Description { get; }               
+        
+        public string GetLongDescription() => $"Product Name 1: {Name}, Version: {Version} Description : {Description}"; 
     }
 }
