@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static System.Console;
 
 namespace HelloWorldCSharp6
 {
@@ -9,10 +10,10 @@ namespace HelloWorldCSharp6
     {
         public void Main(string[] args)
         {
-            Console.WriteLine("Hello world!");
-            var product = new Product("Car", "  Should be without space. right.  ");
+            WriteLine("Hello world!");
+            var product = new Product("Car", "  Should be without space. right 1.  ");
 
-            Console.WriteLine(product.GetLongDescription());
+            WriteLine(product.GetLongDescription());
 
             var viewingDatesProduct = new Product()
             {
@@ -21,7 +22,7 @@ namespace HelloWorldCSharp6
                 Version = "1.0.1"
             };
 
-            Console.WriteLine($"Viewing dates for version {viewingDatesProduct.Version} are {viewingDatesProduct[0]:dd/MM/yyyy} and {viewingDatesProduct[2]:dd/MM/yyyy}.");
+            WriteLine($"Viewing dates for version {viewingDatesProduct.Version} are {viewingDatesProduct[0]:dd/MM/yyyy} and {viewingDatesProduct[2]:dd/MM/yyyy}.");
 
             // Exception filters demo
             try
@@ -30,14 +31,14 @@ namespace HelloWorldCSharp6
             }
             catch (Exception ex) when (ex.Message == "E1")
             {
-                Console.WriteLine("caught E1");
+                WriteLine("caught E1");
             }
             catch (Exception ex) when (ex.Message == "E2")
             {
-                Console.WriteLine("caught E2");
+                WriteLine("caught E2");
             }
 
-            Console.ReadLine();
+            ReadLine();
         }
     }
 }
