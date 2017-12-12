@@ -4,6 +4,7 @@ namespace Example
 {
     class Program
     {
+
         static void Main(string[] args)
         {
             var point1 = new Point3D(2, 3, 5);
@@ -13,12 +14,15 @@ namespace Example
 
             Console.WriteLine($"Distance point 1 to 2 is {distance}");
 
-	    distance = CalculateDistance(point1);
+	    distance = CalculateDistance(point1, new Point3D());
 	    Console.WriteLine($"Distance point 1 to origin is {distance}");
         }
 
         // Feature in parameters
         private static double CalculateDistance(in Point3D point1, in Point3D point2 = default) {
+	    var originValue = Point3D.Origin; // Copy the constant and assign it into variable originValue
+	    ref readonly var originReference = ref Point3D.Origin;	   // Reference 
+		
             double xDifference = point1.X - point2.X;
             double yDifference = point1.Y - point2.Y;
             double zDifference = point1.Z - point2.Z;
