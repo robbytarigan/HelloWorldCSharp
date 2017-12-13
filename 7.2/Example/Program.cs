@@ -10,7 +10,8 @@ namespace Example
             var point1 = new Point3D(2, 3, 5);
             var point2 = new Point3D(10, 7, 21);
 
-            var distance = CalculateDistance(point1, point2);
+	    // Specifying in is optional here
+            var distance = CalculateDistance(in point1, point2);
 
             Console.WriteLine($"Distance point 1 to 2 is {distance}");
 
