@@ -22,6 +22,9 @@ namespace Example
 
 	    distance = CalculateDistance(readPoint1, readPoint2);
 	    Console.WriteLine("Distance between readonly point 1 to 2 is {0}", distance);
+
+	    distance = CalculateDistance(readPoint1, ReadonlyPoint3D.Origin);
+	    Console.WriteLine("Distance between readonly point 1 to origin is {0}", distance);
         }
 
         // Feature in parameters
@@ -36,7 +39,7 @@ namespace Example
             return Math.Sqrt(xDifference * xDifference + yDifference * yDifference + zDifference * zDifference);
         }
 
-         private static double CalculateDistance(in ReadonlyPoint3D point1, in ReadonlyPoint3D point2 = default) {
+         private static double CalculateDistance(in ReadonlyPoint3D point1, in ReadonlyPoint3D point2) {
             double xDifference = point1.X - point2.X;
             double yDifference = point1.Y - point2.Y;
             double zDifference = point1.Z - point2.Z;
