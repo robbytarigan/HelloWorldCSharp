@@ -29,5 +29,15 @@ namespace Span
 		Assert.Equal(arr[2], bytes[2]);
 		Assert.Equal(45, arr[2]);
 	}
+
+	[Fact]
+	public void Refer_data_on_the_stack() {
+		Span<byte> bytes = stackalloc byte[2]; 	// Using C# 7.2 stackalloc support for spans
+		bytes[0] = 42;
+		bytes[1] = 43;
+		Assert.Equal(42, bytes[0]);
+		Assert.Equal(43, bytes[1]);
+		// bytes[2] = 44; // Throws indexOutOfRangeException
+	}
     }
 }
