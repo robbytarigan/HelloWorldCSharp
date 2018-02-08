@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Span
 {
-    public class UnitTest1
+    public class SpanExamples
     {
         [Fact]
         public void CreateASpanFromArray()
