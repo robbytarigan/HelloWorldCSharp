@@ -39,5 +39,10 @@ namespace Span
 		Assert.Equal(43, bytes[1]);
 		// bytes[2] = 44; // Throws indexOutOfRangeException
 	}
+
+	[Fact]
+	public void Refer_to_arbitrary_pointers_and_lengths() {
+		
+	}
     }
 }
