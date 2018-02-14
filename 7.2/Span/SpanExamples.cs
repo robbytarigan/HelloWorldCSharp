@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Xunit;
 
@@ -56,5 +57,17 @@ namespace Span
 			Marshal.FreeHGlobal(ptr);
 		}
 	}
+
+	[Fact]
+	public void Compare_with_list_of_T_indexer() 	{
+
+		Span<MutableStruct> spanOfStructs = new MutableStruct[1];
+		spanOfStructs[0].Value = 42;
+		Assert.Equal(42, spanOfStructs[0].Value);
+		var listOfStructs = new List<MutableStruct> { new MutableStruct() };
+		// listOfStructs[0].Value = 42; // Error CS1612: the return value is not a variable
+	}
+
+	struct MutableStruct { public int Value; }
     }
 }
