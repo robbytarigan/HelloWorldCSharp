@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using Xunit;
 
 namespace Span
@@ -42,7 +43,18 @@ namespace Span
 
 	[Fact]
 	public void Refer_to_arbitrary_pointers_and_lengths() {
-		
+		IntPtr ptr = Marshal.AllocHGlobal(1);
+		try {
+			Span<byte> bytes;
+			unsafe { bytes = new Span<byte>((byte*)ptr, 1); }
+			bytes[0] = 42;
+			Assert.Equal(42, bytes[0]);
+			Assert.Equal(Marshal.ReadByte(ptr), bytes[0]);
+			//bytes[1] = 43; // Throws IndexOutOfRangeException
+		} 
+		finally {
+			Marshal.FreeHGlobal(ptr);
+		}
 	}
     }
 }
