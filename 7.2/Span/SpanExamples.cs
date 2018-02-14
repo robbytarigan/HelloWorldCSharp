@@ -69,5 +69,14 @@ namespace Span
 	}
 
 	struct MutableStruct { public int Value; }
+
+	[Fact]
+	public void ReadOnlySpan_enables_read_only_access() {
+		string str = "hello, world";
+		string worldString = str.Substring(startIndex: 7, length: 5); // Allocates
+		ReadOnlySpan<char> worldSpan = str.AsReadOnlySpan().Slice(start: 7, length: 5); // No allocation
+		Assert.Equal('w', worldSpan[0]);
+		// worldSpan[0] = 'a';	// Error CS20200: indexer cannot be assigned to
+	}
     }
 }
