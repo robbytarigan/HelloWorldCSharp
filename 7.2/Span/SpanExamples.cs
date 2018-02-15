@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime;
 using System.Runtime.InteropServices;
 using Xunit;
 
@@ -77,6 +78,14 @@ namespace Span
 		ReadOnlySpan<char> worldSpan = str.AsReadOnlySpan().Slice(start: 7, length: 5); // No allocation
 		Assert.Equal('w', worldSpan[0]);
 		// worldSpan[0] = 'a';	// Error CS20200: indexer cannot be assigned to
+	}
+
+	[Fact]
+	public void Refer_the_middle_of_objects_like_arrays()	{
+		var arr = new byte[100];
+		Span<byte> interiorRef1 = arr.AsSpan().Slice(start: 20);
+		Span<byte> interiorRef2 = new Span<byte>(arr, 20, arr.Length - 20);
+		Span<byte> interiorRef3 = Span<byte>.DangerousCreate(arr, ref arr[20], arr.Length - 20);
 	}
     }
 }
