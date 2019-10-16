@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DefaultInterfaceMethods
 {
@@ -11,6 +12,16 @@ namespace DefaultInterfaceMethods
         DateTime? LastOrder { get; }
         string Name { get; }
         IDictionary<DateTime, string> Reminders { get; }
+
+        decimal ComputeLoyaltyDiscount()
+        {
+            DateTime TwoYearsAgo = DateTime.Now.AddYears(-2);
+            if ((DateJoined < TwoYearsAgo) && (PreviousOrders.Count() > 10))
+            {
+                return 0.10m;
+            }
+            return 0;
+        }
     }
 
     public interface IOrder
@@ -19,11 +30,72 @@ namespace DefaultInterfaceMethods
         decimal Cost { get; }
     }
 
+    public class SampleCustomer : ICustomer
+    {
+        private List<IOrder> previousOrders;
+        private DateTime? lastOrder;
+
+        public SampleCustomer(string name, DateTime dateJoined)
+        {
+            Name = name;
+            DateJoined = dateJoined;
+            Reminders = new Dictionary<DateTime, string>();
+            previousOrders = new List<IOrder>();
+        }
+
+        public IEnumerable<IOrder> PreviousOrders => this.previousOrders;
+
+        public DateTime DateJoined { get; }
+
+        public DateTime? LastOrder => this.lastOrder;
+
+        public string Name { get; }
+
+        public IDictionary<DateTime, string> Reminders { get; }
+
+
+        internal void AddOrder(SampleOrder order)
+        {
+            this.previousOrders.Add(order);
+            this.lastOrder = order.Purchased;
+        }
+    }
+
+    public class SampleOrder : IOrder
+    {
+        public SampleOrder(DateTime purchased, decimal cost)
+        {
+            Purchased = purchased;
+            Cost = cost;
+        }
+
+        public DateTime Purchased { get; }
+        public decimal Cost { get; }
+    }
+
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            SampleCustomer c = new SampleCustomer("customer one", new DateTime(2010, 5, 31))
+            {
+                Reminders =
+                {
+                    { new DateTime(2010, 08, 12), "childs's birthday" },
+                    { new DateTime(1012, 11, 15), "anniversary" }
+                }
+            };
+
+
+            SampleOrder o = new SampleOrder(new DateTime(2012, 6, 1), 5m);
+            c.AddOrder(o);
+
+            o = new SampleOrder(new DateTime(2103, 7, 4), 25m);
+            c.AddOrder(o);
+
+            // Check the discount:
+            ICustomer theCustomer = c;
+            Console.WriteLine($"Current discount: {theCustomer.ComputeLoyaltyDiscount()}");
         }
     }
 }
