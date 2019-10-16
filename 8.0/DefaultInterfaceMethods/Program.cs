@@ -27,11 +27,12 @@ namespace DefaultInterfaceMethods
         private static int orderCount = 10;
         private static decimal discountPercent = 0.10m;
 
-        public decimal ComputeLoyaltyDiscount()
+        public decimal ComputeLoyaltyDiscount() => DefaultLoyaltyDiscount(this);
+        protected static decimal DefaultLoyaltyDiscount(ICustomer c)
         {
             DateTime start = DateTime.Now - length;
 
-            if ((DateJoined < start) && (PreviousOrders.Count() > orderCount))
+            if ((c.DateJoined < start) && (c.PreviousOrders.Count() > orderCount))
             {
                 return discountPercent;
             }
@@ -68,11 +69,17 @@ namespace DefaultInterfaceMethods
 
         public IDictionary<DateTime, string> Reminders { get; }
 
-
-        internal void AddOrder(SampleOrder order)
+        public void AddOrder(SampleOrder order)
         {
             this.previousOrders.Add(order);
             this.lastOrder = order.Purchased;
+        }
+        public decimal ComputeLoyaltyDiscount()
+        {
+            if (PreviousOrders.Any() == false)
+                return 0.50m;
+            else
+                return ICustomer.DefaultLoyaltyDiscount(this);
         }
     }
 
@@ -92,7 +99,7 @@ namespace DefaultInterfaceMethods
     {
         static void Main(string[] args)
         {
-            SampleCustomer c = new SampleCustomer("customer one", new DateTime(2010, 5, 31))
+            var c1 = new SampleCustomer("customer one", new DateTime(2010, 5, 31))
             {
                 Reminders =
                 {
@@ -103,15 +110,25 @@ namespace DefaultInterfaceMethods
 
 
             SampleOrder o = new SampleOrder(new DateTime(2012, 6, 1), 5m);
-            c.AddOrder(o);
+            c1.AddOrder(o);
 
             o = new SampleOrder(new DateTime(2103, 7, 4), 25m);
-            c.AddOrder(o);
+            c1.AddOrder(o);
 
             // Check the discount:
-            ICustomer theCustomer = c;
+            ICustomer theCustomer = c1;
             ICustomer.SetLoyaltyThresholds(new TimeSpan(30, 0, 0, 0), 1, 0.25m);
             Console.WriteLine($"Current discount: {theCustomer.ComputeLoyaltyDiscount()}");
+            
+            ICustomer c2 = new SampleCustomer("customer one", new DateTime(2010, 5, 31))
+            {
+                Reminders =
+                {
+                    { new DateTime(2022, 10, 5), "anniversary" }
+                }
+            };
+
+            Console.WriteLine($"Current discount for other customer: {c2.ComputeLoyaltyDiscount()}");
         }
     }
 }
