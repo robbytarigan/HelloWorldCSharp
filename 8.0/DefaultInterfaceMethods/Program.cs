@@ -13,12 +13,27 @@ namespace DefaultInterfaceMethods
         string Name { get; }
         IDictionary<DateTime, string> Reminders { get; }
 
-        decimal ComputeLoyaltyDiscount()
+        // Version 2:
+        public static void SetLoyaltyThresholds(
+            TimeSpan ago,
+            int minimumOrders = 10,
+            decimal percentageDiscount = 0.10m)
         {
-            DateTime TwoYearsAgo = DateTime.Now.AddYears(-2);
-            if ((DateJoined < TwoYearsAgo) && (PreviousOrders.Count() > 10))
+            length = ago;
+            orderCount = minimumOrders;
+            discountPercent = percentageDiscount;
+        }
+        private static TimeSpan length = new TimeSpan(365 * 2, 0, 0, 0); // two years
+        private static int orderCount = 10;
+        private static decimal discountPercent = 0.10m;
+
+        public decimal ComputeLoyaltyDiscount()
+        {
+            DateTime start = DateTime.Now - length;
+
+            if ((DateJoined < start) && (PreviousOrders.Count() > orderCount))
             {
-                return 0.10m;
+                return discountPercent;
             }
             return 0;
         }
@@ -95,6 +110,7 @@ namespace DefaultInterfaceMethods
 
             // Check the discount:
             ICustomer theCustomer = c;
+            ICustomer.SetLoyaltyThresholds(new TimeSpan(30, 0, 0, 0), 1, 0.25m);
             Console.WriteLine($"Current discount: {theCustomer.ComputeLoyaltyDiscount()}");
         }
     }
