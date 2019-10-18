@@ -90,5 +90,17 @@ namespace PatternMatching2
                 (false, TimeBand.Overnight, true) => 1.00m,
                 (false, TimeBand.Overnight, false) => 1.00m,
             };
+
+        public decimal PeakTimePremium(DateTime timeOfToll, bool inbound) =>
+    (IsWeekDay(timeOfToll), GetTimeBand(timeOfToll), inbound) switch
+    {
+        (true, TimeBand.MorningRush, true) => 2.00m,
+        (true, TimeBand.MorningRush, false) => 1.00m,
+        (true, TimeBand.Daytime, _) => 1.50m,
+        (true, TimeBand.EveningRush, true) => 1.00m,
+        (true, TimeBand.EveningRush, false) => 2.00m,
+        (true, TimeBand.Overnight, _) => 0.75m,
+        (false, _, _) => 1.00m,
+    };
     }
 }
