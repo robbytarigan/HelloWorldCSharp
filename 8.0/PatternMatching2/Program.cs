@@ -147,6 +147,11 @@ namespace PatternMatching2
 
             Console.WriteLine("====================================================");
 
+            foreach (var time in testTimes)
+            {
+                Console.WriteLine($"Inbound premium at {time} is {tollCalc.PeakTimePremium(time, true)}");
+                Console.WriteLine($"Outbound premium at {time} is {tollCalc.PeakTimePremium(time, false)}");
+            }
         }
     }
 }
