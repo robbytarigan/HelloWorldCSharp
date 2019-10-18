@@ -42,13 +42,10 @@ namespace PatternMatching2
         private static bool IsWeekDay(DateTime timeOfToll) =>
         timeOfToll.DayOfWeek switch
         {
-           DayOfWeek.Monday => true,
-           DayOfWeek.Tuesday => true,
-           DayOfWeek.Wednesday => true,
-           DayOfWeek.Thursday => true,
-           DayOfWeek.Friday => true,
-           DayOfWeek.Saturday => false,
-           DayOfWeek.Sunday => false
+            DayOfWeek.Saturday => false,
+            DayOfWeek.Sunday => false,
+            _ => true
+
         };
     }
 }
