@@ -39,6 +39,16 @@ namespace PatternMatching2
                 null => throw new ArgumentNullException(nameof(vehicle))
             };
 
-        
+        private static bool IsWeekDay(DateTime timeOfToll) =>
+        timeOfToll.DayOfWeek switch
+        {
+           DayOfWeek.Monday => true,
+           DayOfWeek.Tuesday => true,
+           DayOfWeek.Wednesday => true,
+           DayOfWeek.Thursday => true,
+           DayOfWeek.Friday => true,
+           DayOfWeek.Saturday => false,
+           DayOfWeek.Sunday => false
+        };
     }
 }
