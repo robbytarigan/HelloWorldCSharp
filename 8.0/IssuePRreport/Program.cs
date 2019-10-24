@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -42,16 +41,7 @@ namespace IssuePRreport
     }
   }
 ";
-        private class progressStatus : IProgress<int>
-        {
-            Action<int> action;
-            public progressStatus(Action<int> progressAction) =>
-                action = progressAction;
 
-            public void Report(int value) => action(value);
-        }
-
-        // <SnippetStarterAppMain>
         static async Task Main(string[] args)
         {
             //Follow these steps to create a GitHub Access Token
@@ -68,31 +58,15 @@ namespace IssuePRreport
             {
                 Credentials = new Octokit.Credentials(key)
             };
-
-            // <SnippetEnumerateOldStyle>
-            var progressReporter = new progressStatus((num) =>
+            
+            int num = 0;
+            await foreach (var issue in runPagedQueryAsync(client, PagedIssueQuery, "docs"))
             {
-                Console.WriteLine($"Received {num} issues in total");
-            });
-            CancellationTokenSource cancellationSource = new CancellationTokenSource();
-
-            try
-            {
-                var results = await runPagedQueryAsync(client, PagedIssueQuery, "docs",
-                    cancellationSource.Token, progressReporter);
-                foreach (var issue in results)
-                    Console.WriteLine(issue);
+                Console.WriteLine(issue);
+                Console.WriteLine($"Received {++num} issues in total");
             }
-            catch (OperationCanceledException)
-            {
-                Console.WriteLine("Work has been cancelled");
-            }
-            // </SnippetEnumerateOldStyle>
         }
-        // </SnippetStarterAppMain>
-
-        // <SnippetRunPagedQuery>
-        private static async Task<JArray> runPagedQueryAsync(GitHubClient client, string queryText, string repoName, CancellationToken cancel, IProgress<int> progress)
+        private static async IAsyncEnumerable<JToken> runPagedQueryAsync(GitHubClient client, string queryText, string repoName)
         {
             var issueAndPRQuery = new GraphQLRequest
             {
@@ -100,7 +74,6 @@ namespace IssuePRreport
             };
             issueAndPRQuery.Variables["repo_name"] = repoName;
 
-            JArray finalResults = new JArray();
             bool hasMorePages = true;
             int pagesReturned = 0;
             int issuesReturned = 0;
@@ -118,19 +91,14 @@ namespace IssuePRreport
                 hasMorePages = (bool)pageInfo(results)["hasPreviousPage"];
                 issueAndPRQuery.Variables["start_cursor"] = pageInfo(results)["startCursor"].ToString();
                 issuesReturned += issues(results)["nodes"].Count();
-                // <SnippetProcessPage>
-                finalResults.Merge(issues(results)["nodes"]);
-                progress?.Report(issuesReturned);
-                cancel.ThrowIfCancellationRequested();
-                // </SnippetProcessPage>
+
+                foreach (JObject issue in issues(results)["nodes"])
+                    yield return issue;
             }
-            return finalResults;
 
             JObject issues(JObject result) => (JObject)result["data"]["repository"]["issues"];
             JObject pageInfo(JObject result) => (JObject)issues(result)["pageInfo"];
         }
-        // </SnippetRunPagedQuery>
-
 
         private static string GetEnvVariable(string item, string error, string defaultValue)
         {
