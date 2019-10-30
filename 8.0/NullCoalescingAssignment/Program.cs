@@ -6,12 +6,20 @@ namespace NullCoalescingAssignment
 {
     class Program
     {
+        private string name;
+
+        public string Name
+        {
+            get => name;
+            set => name = value ?? throw new ArgumentNullException(nameof(value), "Name cannot be null");
+        }
+
         static void Main(string[] args)
         {
             Example1();
             Example2();
             AlternativeExpressionExample();
-            ProvideValueOfUnderlyingType();
+            ProvideValueOfUnderlyingTypeExample();
         }
 
         private static void Example1()
@@ -58,9 +66,8 @@ namespace NullCoalescingAssignment
             Console.WriteLine(sum);  // output: NaN
         }
 
-        private static void ProvideValueOfUnderlyingType()
+        private static void ProvideValueOfUnderlyingTypeExample()
         {
-
             Console.WriteLine("---------------------- Provide Value of Underlying Type Example -----------------------------");
             int? a = null;
             int b = a ?? -1;
