@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NullCoalescingAssignment
 {
@@ -9,6 +10,7 @@ namespace NullCoalescingAssignment
         {
             Example1();
             Example2();
+            AlternativeExpressionExample();
         }
 
         private static void Example1()
@@ -41,6 +43,18 @@ namespace NullCoalescingAssignment
         private static void Display<T>(T a, T backup)
         {
             Console.WriteLine(a ?? backup);
+        }
+
+        private static void AlternativeExpressionExample()
+        {
+            Console.WriteLine("----------------------Alternative Expression Example -----------------------------");
+            double SumNumbers(List<double[]> setsOfNumbers, int indexOfSetToSum)
+            {
+                return setsOfNumbers?[indexOfSetToSum]?.Sum() ?? double.NaN;
+            }
+
+            var sum = SumNumbers(null, 0);
+            Console.WriteLine(sum);  // output: NaN
         }
     }
 }
