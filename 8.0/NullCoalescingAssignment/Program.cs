@@ -38,5 +38,9 @@ namespace NullCoalescingAssignment
             Console.WriteLine(string.Join(" ", numbers));  // output: 5 0
             Console.WriteLine(a);  // output: 0
         }
+        private static void Display<T>(T a, T backup)
+        {
+            Console.WriteLine(a ?? backup);
+        }
     }
 }
