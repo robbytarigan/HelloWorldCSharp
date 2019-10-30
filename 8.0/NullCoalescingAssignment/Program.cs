@@ -11,6 +11,7 @@ namespace NullCoalescingAssignment
             Example1();
             Example2();
             AlternativeExpressionExample();
+            ProvideValueOfUnderlyingType();
         }
 
         private static void Example1()
@@ -55,6 +56,15 @@ namespace NullCoalescingAssignment
 
             var sum = SumNumbers(null, 0);
             Console.WriteLine(sum);  // output: NaN
+        }
+
+        private static void ProvideValueOfUnderlyingType()
+        {
+
+            Console.WriteLine("---------------------- Provide Value of Underlying Type Example -----------------------------");
+            int? a = null;
+            int b = a ?? -1;
+            Console.WriteLine(b);  // output: -1
         }
     }
 }
