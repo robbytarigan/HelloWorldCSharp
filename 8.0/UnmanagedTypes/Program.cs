@@ -2,27 +2,26 @@
 
 namespace UnmanagedTypes
 {
-    public struct Coords<T>
+    class Program
     {
-        public T X;
-        public T Y;
-        public T Z;
-    }
-
-    public class UnmanagedTypes
-    {
-        public static void Main()
+        public struct Coords<T>
         {
-            DisplaySize<Coords<int>>();
-            DisplaySize<Coords<double>>();
+            public T X;
+            public T Y;
         }
 
-        private unsafe static void DisplaySize<T>() where T : unmanaged
+        static void Main(string[] args)
         {
-            Console.WriteLine($"{typeof(T)} is unmanaged and its size is {sizeof(T)} bytes");
+            Span<Coords<int>> coordinates = stackalloc[]
+            {
+                new Coords<int> { X = 0, Y = 0 },
+                new Coords<int> { X = 0, Y = 3 },
+                new Coords<int> { X = 4, Y = 0 }
+            };
+
+            foreach (var c in coordinates) {
+                Console.WriteLine("{{ X = {0}, Y = {1} }}",c.X, c.Y);
+            }
         }
     }
-    // Output:
-    // Coords`1[System.Int32] is unmanaged and its size is 8 bytes
-    // Coords`1[System.Double] is unmanaged and its size is 16 bytes
 }
