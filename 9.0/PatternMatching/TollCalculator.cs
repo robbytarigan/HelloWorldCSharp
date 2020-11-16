@@ -35,7 +35,7 @@ namespace PatternMatching
                     > 5000 => 10.00m + 5.00m,
                 },
 
-                { } => throw new ArgumentException(message: "Not a known vehicle type", paramName: nameof(vehicle)),
+                not null => throw new ArgumentException($"Not a known vehicle type: {vehicle}", nameof(vehicle)),
                 null => throw new ArgumentNullException(nameof(vehicle))
             };
     }
