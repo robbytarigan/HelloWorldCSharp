@@ -30,7 +30,7 @@ namespace PatternMatching
 
                 DeliveryTruck t when (t.GrossWeightClass > 5000) => 10.00m + 5.00m,
                 DeliveryTruck t when (t.GrossWeightClass < 3000) => 10.00m - 2.00m,
-                DeliveryTruck _ => 10.00m,
+                DeliveryTruck => 10.00m,
 
                 { } => throw new ArgumentException(message: "Not a known vehicle type", paramName: nameof(vehicle)),
                 null => throw new ArgumentNullException(nameof(vehicle))
