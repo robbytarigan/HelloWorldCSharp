@@ -30,9 +30,9 @@ namespace PatternMatching
 
                 DeliveryTruck t => t.GrossWeightClass switch
                 {
-                    > 5000 => 10.00m + 5.00m,
                     < 3000 => 10.00m - 2.00m,
-                    _ => 10.00m,
+                    >= 3000 and <= 5000 => 10.00m,
+                    > 5000 => 10.00m + 5.00m,
                 },
 
                 { } => throw new ArgumentException(message: "Not a known vehicle type", paramName: nameof(vehicle)),
